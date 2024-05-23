@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="./css/intro-style.css">
 	<link rel="icon" href="./img/icon.png">
 	
+	<!--Ho provato ad usare l'attributo integrity con l'hash di jQuery, ma non viene riconosciuto come un attributo valido -->
 	<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 </head>
 <body>
