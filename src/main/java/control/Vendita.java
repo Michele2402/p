@@ -52,31 +52,32 @@ public class Vendita extends HttpServlet {
 		            List<FileItem> multiparts = new ServletFileUpload(
 		                                     new DiskFileItemFactory()).parseRequest(new ServletRequestContext(request));
 
-		            for(FileItem item : multiparts){
-		                if(!item.isFormField()){
+		            for (FileItem item : multiparts) {
+		                if (!item.isFormField()) {
 		                    String name = new File(item.getName()).getName();
-		                    item.write( new File(UPLOAD_DIRECTORY + File.separator + name));
+		                    item.write(new File(UPLOAD_DIRECTORY + File.separator + name));
 		                    product.setImmagine(name);
-		                }
-		                else {
-		                	if (item.getFieldName().compareTo("nome") == 0) {
-		                		product.setNome(item.getString());
-		                	}
-		                	else if (item.getFieldName().compareTo("prezzo") == 0) {
-		                		product.setPrezzo(Double.parseDouble(item.getString()));
-		                	}
-		                	else if (item.getFieldName().compareTo("spedizione") == 0) {
-		                		product.setSpedizione(Double.parseDouble(item.getString()));
-		                	}
-		                	else if (item.getFieldName().compareTo("tipologia") == 0) {
-		                		product.setTipologia(item.getString());
-		                	}
-							else if (item.getFieldName().compareTo("tag") == 0) {
-								product.setTag(item.getString());
-							}
-							else if (item.getFieldName().compareTo("descrizione") == 0) {
-		                		product.setDescrizione(item.getString());
-		                	}
+		                } else {
+		                    String fieldName = item.getFieldName();
+		                    String fieldValue = item.getString();
+		                    
+		                    // Sanifica il valore del campo
+		                    fieldValue = StringEscapeUtils.escapeHtml(fieldValue);
+		                    
+		                    // Imposta il valore del campo nel bean del prodotto
+		                    if (fieldName.equals("nome")) {
+		                        product.setNome(fieldValue);
+		                    } else if (fieldName.equals("prezzo")) {
+		                        product.setPrezzo(Double.parseDouble(fieldValue));
+		                    } else if (fieldName.equals("spedizione")) {
+		                        product.setSpedizione(Double.parseDouble(fieldValue));
+		                    } else if (fieldName.equals("tipologia")) {
+		                        product.setTipologia(fieldValue);
+		                    } else if (fieldName.equals("tag")) {
+		                        product.setTag(fieldValue);
+		                    } else if (fieldName.equals("descrizione")) {
+		                        product.setDescrizione(fieldValue);
+		                    }
 		                }
 		            }
 
