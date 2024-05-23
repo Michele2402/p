@@ -114,19 +114,31 @@ public class ProductModel {
 		return (result != 0);
 	}
 	public synchronized Collection<ProductBean> doRetrieveAll(String where) throws SQLException {
+		
+		
+		//effettuo un controllo sul parametro where
+		if (where == null || where.trim().isEmpty()) {
+		    throw new IllegalArgumentException("Invalid tipologia value");
+		}
+		
+		
 		Connection connection = null;
 		Connection connection2 = null;
 		PreparedStatement preparedStatement = null;
 		PreparedStatement preparedStatement2 = null;
 
 		Collection<ProductBean> products = new LinkedList<ProductBean>();
-
-		String selectSQL = "SELECT * FROM " + ProductModel.TABLE_NAME + " WHERE deleted = 'false' AND nomeTipologia = '" + where + "'";
+		
+		//utilizzo un placeholder al posto di where per evitare la concatenazione di stringhe
+		String selectSQL = "SELECT * FROM " + ProductModel.TABLE_NAME + " WHERE deleted = false AND nomeTipologia = ?";
 		String sql2 = "SELECT AVG(votazione) FROM Recensione WHERE codiceProdotto = ?";
 		
 		try {
 			connection = DriverManagerConnectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(selectSQL);
+			
+			  // Imposto il parametro del prepared statement
+	        preparedStatement.setString(1, where);
 
 			ResultSet rs = preparedStatement.executeQuery();
 
