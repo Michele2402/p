@@ -31,8 +31,8 @@ public class ProductControl extends HttpServlet {
 	}
 	
 	public ProductControl() {
-		super();
-	}
+		super();;
+	} 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
